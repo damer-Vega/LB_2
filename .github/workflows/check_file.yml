@@ -1,0 +1,20 @@
+name: Проверка наличия файла test_GA.txt
+
+on: push
+
+jobs:
+  check-file:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Проверка файла test_GA.txt
+      run: |
+        if [ -f "test_GA.txt" ]; then
+          echo "Файл test_GA.txt найден."
+        else
+          echo "Файл test_GA.txt не найден."
+          exit 1
+        fi
