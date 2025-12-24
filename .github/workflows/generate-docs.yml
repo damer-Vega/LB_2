@@ -1,0 +1,42 @@
+name: Создане документации Doxygen 
+
+on: push
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Клонирование репозитория
+      uses: actions/checkout@v3
+
+    - name: Установка Doxygen
+      run: sudo apt-get install -y doxygen graphviz
+
+    - name: Создание документации Doxygen
+      run:  doxygen Doxyfile
+
+    - name: Клонирование специальный репозитория во временный локальный репозиторий
+      run: |
+        git clone https://x-access-token:${{ secrets.FOR_LB_2_7 }}@github.com/damer-Vega/LB_2.io.git deployment_repo
+
+      env:
+        GITHUB_TOKEN: ${{ secrets.FOR_LB_2_7 }}
+
+    - name: Копирование документации во временный репозиторий
+      run: |
+        rm -rf deployment_repo/* 
+        cp -r docs/html/* deployment_repo/
+
+    - name: Коммит и загрузка изменений из временного в специальный репозиторий
+      run: |
+        cd deployment_repo
+        git config --global user.name "damer-Vega"
+        git config --global user.email "boronenko222@gmail.com"
+        git add .
+        git commit -m "Обновление документации"
+        git push origin main
+      env:
+        GITHUB_TOKEN: ${{ secrets.FOR_LB_2_7 }}
+
+
