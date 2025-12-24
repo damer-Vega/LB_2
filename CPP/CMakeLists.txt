@@ -7,7 +7,7 @@ project(Lb_1.4)
 include_directories("${CMAKE_SOURCE_DIR}/LIB")
 
 # Добавляем исходный файл для основного приложения
-add_executable(Lb_1.4 main.cpp)
+add_executable(Lb_1.4 main_test.cpp)
 
 # Линковка с библиотекой, созданной в подпроекте LIB
 target_link_libraries(Lb_1.4 operations)
